@@ -4,13 +4,12 @@
 #include <time.h>
 #include <switch.h>
 
-// Maximizamos el tamaño para una pantalla estándar de Switch
-#define GRID_WIDTH  75   // Ampliado pero ajustado al ancho visible
-#define GRID_HEIGHT 35   // Ampliado pero dejando espacio para mensajes
+#define GRID_WIDTH  75   
+#define GRID_HEIGHT 35   
 #define OFFSET_X    2    // espacio para el marcador
-#define OFFSET_Y    4    // espacio para el título y puntuación - aumentado de 3 a 4
+#define OFFSET_Y    4    // espacio para el título y puntuación
 #define BORDER_CHAR '#'
-#define SNAKE_BODY  'o'  // Cambiado a minúscula para el cuerpo
+#define SNAKE_BODY  'o'
 #define FOOD_CHAR   '*'
 #define TICKS_PER_MS 19200ULL
 
@@ -24,7 +23,7 @@ typedef struct {
     int x, y;
 } Point;
 
-Point snake[1024];  // Aumentado el tamaño máximo de la serpiente
+Point snake[1024];  // tamaño máximo de la serpiente
 int snakeLength = 3;
 int dx = 1, dy = 0;
 Point food;
@@ -32,12 +31,12 @@ int score = 0;
 
 // Dibuja los bordes del recuadro de juego
 void drawBorders() {
-    // Dibujamos el borde superior
+    // borde superior
     for (int x = 0; x <= GRID_WIDTH + 1; x++) {
         printf("\x1b[%d;%dH%c", OFFSET_Y, OFFSET_X + x, BORDER_CHAR);
     }
     
-    // Dibujamos el borde inferior
+    // borde inferior
     for (int x = 0; x <= GRID_WIDTH + 1; x++) {
         printf("\x1b[%d;%dH%c", OFFSET_Y + GRID_HEIGHT + 1, OFFSET_X + x, BORDER_CHAR);
     }
@@ -82,7 +81,7 @@ void updateDirection(u64 kDown) {
     if ((kDown & HidNpadButton_Left) && dx == 0)  { dx = -1; dy = 0; }
     if ((kDown & HidNpadButton_Right) && dx == 0) { dx = 1; dy = 0; }
     
-    // También soporte para controles con stick analógico
+    // soporte para controles con stick analógico
     if ((kDown & HidNpadButton_StickLUp) && dy == 0)    { dx = 0; dy = -1; }
     if ((kDown & HidNpadButton_StickLDown) && dy == 0)  { dx = 0; dy = 1; }
     if ((kDown & HidNpadButton_StickLLeft) && dx == 0)  { dx = -1; dy = 0; }
@@ -100,12 +99,8 @@ char getSnakeHeadChar() {
 void draw() {
     consoleClear();
     
-    // Dibujar título y controles - mantenlos en las primeras líneas
     printf("\x1b[1;1HSNAKE para Nintendo Switch by Curro Raya");
     printf("\x1b[2;1HPuntuacion: %d  [+ para salir]", score);
-    
-    // Espacio extra entre el texto y el borde - puede agregar una línea vacía
-    // printf("\x1b[3;1H ");  // Esto dejaría la línea 3 vacía
     
     // Dibujar bordes
     drawBorders();
